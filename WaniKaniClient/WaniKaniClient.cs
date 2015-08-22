@@ -271,6 +271,8 @@ namespace WaniKaniClientLib
         private void UpdateUserInformation(JObject responce)
         {
             var requestData = responce["user_information"];
+            if (requestData == null) return;
+
             _cachedUserInformation = JsonConvert.DeserializeObject<UserInformation>(requestData.ToString());
 
             _cachedTimeUserInformation = DateTime.Now.AddMinutes(CacheInMinutes);
