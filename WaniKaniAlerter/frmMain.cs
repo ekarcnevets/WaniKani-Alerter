@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ namespace WaniKaniAlerter
         private StudyQueue queue;
         private bool SilentMode = false;
         private DateTime NextReviewTimeWhenAlertSeen;
+        private ConcurrentQueue<Action> messages = new ConcurrentQueue<Action>();
 
         public Task Initialize(bool newKey = false) {
             string apiKey;
@@ -29,7 +31,7 @@ namespace WaniKaniAlerter
             if (!SilentMode) {
                 ni.ShowBalloonTip(5000
                                  , "WaniKani Alert"
-                                 , String.Format("The Crabigator has {0:N} reviews for you.", numReviews)
+                                 , String.Format("The Crabigator has {0:N0} reviews for you.", numReviews)
                                  , ToolTipIcon.None);
                 SystemSounds.Exclamation.Play();
             }
@@ -45,6 +47,7 @@ namespace WaniKaniAlerter
         }
 
         public void RefreshQueue(bool forceUpdate = false) {
+            UpdateStatus("Getting info...");
             _client.StudyQueue(!forceUpdate).ContinueWith(async (t) => {
                 queue = await t;
                 // Don't notify repeatedly if the first notification was seen.
@@ -65,7 +68,7 @@ namespace WaniKaniAlerter
         }
 
         private void UpdateStatus(string newStatus) {
-            statusToolStripMenuItem.Text = newStatus;
+            messages.Enqueue(() => statusToolStripMenuItem.Text = newStatus);
         }
 
         private void UpdateStatus(int reviewsAvailable) {
@@ -73,8 +76,8 @@ namespace WaniKaniAlerter
         }
 
         public Task ValidateAPIKey() {
+            UpdateStatus("Validating API key...");
             return _client.UserInformation().ContinueWith(async (t) => {
-                UpdateStatus("Validating API key...");
                 var info = await t;
                 if (info == null) {
                     // Assume user does not exist.  Also possible: network errors, for example
@@ -94,7 +97,6 @@ namespace WaniKaniAlerter
                     // Even if the user sets a correct API key following this, it will be
                     // handled in the nested ValidateAPIKey call, so do nothing more here.
                 } else {
-                    UpdateStatus("Getting info...");
                     StartListening();
                 }
             });
@@ -126,6 +128,13 @@ namespace WaniKaniAlerter
         private void btnOK_Click(object sender, EventArgs e) {
             DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Hide();
+        }
+
+        private void timerHandleMessages_Tick(object sender, EventArgs e) {
+            Action message;
+            while (messages.TryDequeue(out message)) {
+                message();
+            }
         }
 
         private void timerUpdate_Tick(object sender, EventArgs e) {
@@ -161,6 +170,9 @@ namespace WaniKaniAlerter
 
             // Load user settings that affect controls
             this.timerUpdate.Interval = WaniKaniAlerter.Properties.Settings.Default.UpdateRate * 60000;
+
+            this.nudMinReviews.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumReviews;
+            this.nudUpdateRate.Value = WaniKaniAlerter.Properties.Settings.Default.UpdateRate;
         }
         #endregion
     }

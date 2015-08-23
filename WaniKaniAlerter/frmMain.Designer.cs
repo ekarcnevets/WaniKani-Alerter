@@ -32,6 +32,7 @@
             this.ni = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.statusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.changeAPIKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.silentModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,10 +45,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.updateNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.Label();
             this.nudUpdateRate = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
+            this.timerHandleMessages = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinReviews)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudUpdateRate)).BeginInit();
@@ -80,6 +81,13 @@
             this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
             this.statusToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.statusToolStripMenuItem.Text = "Inactive";
+            // 
+            // updateNowToolStripMenuItem
+            // 
+            this.updateNowToolStripMenuItem.Name = "updateNowToolStripMenuItem";
+            this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.updateNowToolStripMenuItem.Text = "Update &Now";
+            this.updateNowToolStripMenuItem.Click += new System.EventHandler(this.updateNowToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -187,13 +195,6 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // updateNowToolStripMenuItem
-            // 
-            this.updateNowToolStripMenuItem.Name = "updateNowToolStripMenuItem";
-            this.updateNowToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.updateNowToolStripMenuItem.Text = "Update &Now";
-            this.updateNowToolStripMenuItem.Click += new System.EventHandler(this.updateNowToolStripMenuItem_Click);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -240,6 +241,11 @@
             this.label4.Size = new System.Drawing.Size(43, 13);
             this.label4.TabIndex = 8;
             this.label4.Text = "minutes";
+            // 
+            // timerHandleMessages
+            // 
+            this.timerHandleMessages.Enabled = true;
+            this.timerHandleMessages.Tick += new System.EventHandler(this.timerHandleMessages_Tick);
             // 
             // frmMain
             // 
@@ -290,6 +296,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown nudUpdateRate;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Timer timerHandleMessages;
     }
 }
 
