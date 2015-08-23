@@ -79,13 +79,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WaniKaniClient\WaniKaniClientLib.csproj">
+    <None Include="Resources\LogoStamp.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WaniKani-C-Sharp-Client\WaniKaniClient\WaniKaniClientLib.csproj">
       <Project>{6546956c-826b-4a5c-b639-a0f909c68f31}</Project>
       <Name>WaniKaniClientLib</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\LogoStamp.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

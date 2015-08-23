@@ -1,0 +1,3 @@
+[submodule "WaniKani-C-Sharp-Client"]
+	path = WaniKani-C-Sharp-Client
+	url = https://github.com/adituv/WaniKani-C-Sharp-Client.git

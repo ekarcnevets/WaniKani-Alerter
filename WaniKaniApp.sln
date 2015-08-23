@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaniKaniClientLib", "WaniKaniClient\WaniKaniClientLib.csproj", "{6546956C-826B-4A5C-B639-A0F909C68F31}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaniKaniAlerter", "WaniKaniAlerter\WaniKaniAlerter.csproj", "{B9A03B4A-0021-4920-B09B-DEB3C998DBBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaniKaniClientLib", "WaniKani-C-Sharp-Client\WaniKaniClient\WaniKaniClientLib.csproj", "{6546956C-826B-4A5C-B639-A0F909C68F31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,17 +15,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|x86.Build.0 = Debug|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|x86.ActiveCfg = Release|Any CPU
 		{B9A03B4A-0021-4920-B09B-DEB3C998DBBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9A03B4A-0021-4920-B09B-DEB3C998DBBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9A03B4A-0021-4920-B09B-DEB3C998DBBB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -36,6 +25,16 @@ Global
 		{B9A03B4A-0021-4920-B09B-DEB3C998DBBB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B9A03B4A-0021-4920-B09B-DEB3C998DBBB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B9A03B4A-0021-4920-B09B-DEB3C998DBBB}.Release|x86.ActiveCfg = Release|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6546956C-826B-4A5C-B639-A0F909C68F31}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
