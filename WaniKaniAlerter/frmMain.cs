@@ -44,7 +44,7 @@ namespace WaniKaniAlerter
         public string EditAPIKey() {
             string apiKey = WaniKaniAlerter.Properties.Settings.Default.ApiKey;
             string newKey = Interaction.InputBox("Please enter your API key: ", "Set WaniKani API Key", apiKey);
-
+            
             // If the input box was not cancelled
             if (!String.IsNullOrEmpty(newKey)) {
                 WaniKaniAlerter.Properties.Settings.Default.ApiKey = newKey;
@@ -64,7 +64,9 @@ namespace WaniKaniAlerter
                     Alert(queue.ReviewsAvailable);
                 }
                 UpdateStatus(queue.ReviewsAvailable);
-            });
+            }).ContinueWith((t) => {
+                UpdateStatus("Failed to get study queue.");
+            }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private void StartListening() {
