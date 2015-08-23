@@ -114,9 +114,12 @@ namespace WaniKaniAlerter
             DialogResult dlg = this.ShowDialog();
             if (dlg == System.Windows.Forms.DialogResult.OK) {
                 WaniKaniAlerter.Properties.Settings.Default.MinimumReviews = (int) this.nudMinReviews.Value;
+                WaniKaniAlerter.Properties.Settings.Default.UpdateRate = (int)this.nudUpdateRate.Value;
+                timerUpdate.Interval = (int) this.nudUpdateRate.Value * 60000;
                 WaniKaniAlerter.Properties.Settings.Default.Save();
             } else {
                 this.nudMinReviews.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumReviews;
+                this.nudUpdateRate.Value = WaniKaniAlerter.Properties.Settings.Default.UpdateRate;
             }
         }
 
@@ -155,6 +158,9 @@ namespace WaniKaniAlerter
 
             this.Icon = WaniKaniAlerter.Properties.Resources.LogoStamp;
             this.ni.Icon = WaniKaniAlerter.Properties.Resources.LogoStamp;
+
+            // Load user settings that affect controls
+            this.timerUpdate.Interval = WaniKaniAlerter.Properties.Settings.Default.UpdateRate * 60000;
         }
         #endregion
     }

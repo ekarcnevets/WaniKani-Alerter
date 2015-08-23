@@ -45,8 +45,12 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.updateNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label3 = new System.Windows.Forms.Label();
+            this.nudUpdateRate = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinReviews)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudUpdateRate)).BeginInit();
             this.SuspendLayout();
             // 
             // ni
@@ -54,6 +58,7 @@
             this.ni.ContextMenuStrip = this.contextMenuStrip1;
             this.ni.Text = "WaniKani Alerter";
             this.ni.Visible = true;
+            this.ni.BalloonTipClicked += new System.EventHandler(this.ni_BalloonTipClicked);
             // 
             // contextMenuStrip1
             // 
@@ -67,7 +72,7 @@
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(159, 170);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(159, 148);
             // 
             // statusToolStripMenuItem
             // 
@@ -164,7 +169,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(71, 33);
+            this.btnOK.Location = new System.Drawing.Point(71, 75);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 4;
@@ -175,7 +180,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(152, 33);
+            this.btnCancel.Location = new System.Drawing.Point(152, 75);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 5;
@@ -189,26 +194,76 @@
             this.updateNowToolStripMenuItem.Text = "Update &Now";
             this.updateNowToolStripMenuItem.Click += new System.EventHandler(this.updateNowToolStripMenuItem_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 45);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(116, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Check WaniKani every";
+            // 
+            // nudUpdateRate
+            // 
+            this.nudUpdateRate.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudUpdateRate.Location = new System.Drawing.Point(129, 43);
+            this.nudUpdateRate.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.nudUpdateRate.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.nudUpdateRate.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudUpdateRate.Name = "nudUpdateRate";
+            this.nudUpdateRate.Size = new System.Drawing.Size(48, 20);
+            this.nudUpdateRate.TabIndex = 7;
+            this.nudUpdateRate.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(180, 45);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(43, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "minutes";
+            // 
             // frmMain
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(298, 68);
+            this.ClientSize = new System.Drawing.Size(298, 110);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.nudUpdateRate);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.nudMinReviews);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(314, 106);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(314, 106);
             this.Name = "frmMain";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "WaniKani Alerter";
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudMinReviews)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudUpdateRate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -232,6 +287,9 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateNowToolStripMenuItem;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown nudUpdateRate;
+        private System.Windows.Forms.Label label4;
     }
 }
 
