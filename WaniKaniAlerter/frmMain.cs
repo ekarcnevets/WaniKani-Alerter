@@ -20,6 +20,10 @@ namespace WaniKaniAlerter
             string apiKey;
             if (newKey || String.IsNullOrWhiteSpace(WaniKaniAlerter.Properties.Settings.Default.ApiKey)) {
                 apiKey = EditAPIKey();
+                if (String.IsNullOrWhiteSpace(apiKey)) {
+                    // No key entered: exit now.
+                    Application.Exit();
+                }
             } else {
                 apiKey = WaniKaniAlerter.Properties.Settings.Default.ApiKey;
             }
@@ -38,10 +42,15 @@ namespace WaniKaniAlerter
         }
 
         public string EditAPIKey() {
-            string apiKey = Interaction.InputBox("Please enter your API key: ", "Set WaniKani API Key", WaniKaniAlerter.Properties.Settings.Default.ApiKey);
+            string apiKey = WaniKaniAlerter.Properties.Settings.Default.ApiKey;
+            string newKey = Interaction.InputBox("Please enter your API key: ", "Set WaniKani API Key", apiKey);
 
-            WaniKaniAlerter.Properties.Settings.Default.ApiKey = apiKey;
-            WaniKaniAlerter.Properties.Settings.Default.Save();
+            // If the input box was not cancelled
+            if (!String.IsNullOrEmpty(newKey)) {
+                WaniKaniAlerter.Properties.Settings.Default.ApiKey = newKey;
+                WaniKaniAlerter.Properties.Settings.Default.Save();
+                apiKey = newKey;
+            }
 
             return apiKey;
         }
