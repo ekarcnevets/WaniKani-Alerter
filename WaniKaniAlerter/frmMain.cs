@@ -12,6 +12,7 @@ namespace WaniKaniAlerter
         private AsyncClient _client;
         private StudyQueue queue;
         private bool SilentMode = false;
+        private DateTime NextReviewTimeWhenAlertSeen;
 
         public Task Initialize(bool newKey = false) {
             string apiKey;
@@ -46,7 +47,8 @@ namespace WaniKaniAlerter
         public void RefreshQueue(bool forceUpdate = false) {
             _client.StudyQueue(!forceUpdate).ContinueWith(async (t) => {
                 queue = await t;
-                if (queue.ReviewsAvailable >= WaniKaniAlerter.Properties.Settings.Default.MinimumReviews) {
+                // Don't notify repeatedly if the first notification was seen.
+                if (NextReviewTimeWhenAlertSeen != queue.NextReviewDate && queue.ReviewsAvailable >= WaniKaniAlerter.Properties.Settings.Default.MinimumReviews) {
                     Alert(queue.ReviewsAvailable);
                 }
                 UpdateStatus(queue.ReviewsAvailable);
@@ -136,11 +138,21 @@ namespace WaniKaniAlerter
             SilentMode = !SilentMode;
             self.Checked = SilentMode;
         }
+
+        private void ni_BalloonTipClicked(object sender, EventArgs e) {
+            System.Diagnostics.Process.Start("https://www.wanikani.com/dashboard");
+            NextReviewTimeWhenAlertSeen = queue.NextReviewDate;
+        }
         #endregion
 
         #region Constructors
         public frmMain() {
             InitializeComponent();
+
+            // Disable resize at runtime but not in the designer
+            this.MaximumSize = this.Size;
+            this.MinimumSize = this.Size;
+
             this.Icon = WaniKaniAlerter.Properties.Resources.LogoStamp;
             this.ni.Icon = WaniKaniAlerter.Properties.Resources.LogoStamp;
         }
