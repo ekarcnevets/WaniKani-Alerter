@@ -1,9 +1,7 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Media;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
@@ -21,14 +19,14 @@ namespace WaniKaniAlerter
 
         public Task Initialize(bool newKey = false) {
             string apiKey;
-            if (newKey || String.IsNullOrWhiteSpace(WaniKaniAlerter.Properties.Settings.Default.ApiKey)) {
+            if (newKey || String.IsNullOrWhiteSpace(Properties.Settings.Default.ApiKey)) {
                 apiKey = EditAPIKey();
                 if (String.IsNullOrWhiteSpace(apiKey)) {
                     // No key entered: exit now.
                     Application.Exit();
                 }
             } else {
-                apiKey = WaniKaniAlerter.Properties.Settings.Default.ApiKey;
+                apiKey = Properties.Settings.Default.ApiKey;
             }
             _client = new AsyncClient(apiKey, 15);
             return ValidateAPIKey();
@@ -59,13 +57,13 @@ namespace WaniKaniAlerter
         }
 
         public string EditAPIKey() {
-            string apiKey = WaniKaniAlerter.Properties.Settings.Default.ApiKey;
+            string apiKey = Properties.Settings.Default.ApiKey;
             string newKey = Interaction.InputBox("Please enter your API key: ", "Set WaniKani API Key", apiKey);
             
             // If the input box was not cancelled
             if (!String.IsNullOrEmpty(newKey)) {
-                WaniKaniAlerter.Properties.Settings.Default.ApiKey = newKey;
-                WaniKaniAlerter.Properties.Settings.Default.Save();
+                Properties.Settings.Default.ApiKey = newKey;
+                Properties.Settings.Default.Save();
                 apiKey = newKey;
             }
 
@@ -115,8 +113,8 @@ namespace WaniKaniAlerter
                 var info = await t;
                 if (info == null) {
                     // Assume user does not exist.  Also possible: network errors, for example
-                    var result = MessageBox.Show(WaniKaniAlerter.Properties.Resources.UserInfoRetrievalFailed
-                                                , WaniKaniAlerter.Properties.Resources.ErrorMsgBoxTitle
+                    var result = MessageBox.Show(Properties.Resources.UserInfoRetrievalFailed
+                                                , Properties.Resources.ErrorMsgBoxTitle
                                                 , MessageBoxButtons.YesNo
                                                 , MessageBoxIcon.Error);
                     if (result == DialogResult.Yes) {
@@ -149,17 +147,17 @@ namespace WaniKaniAlerter
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e) {
             DialogResult dlg = this.ShowDialog();
             if (dlg == System.Windows.Forms.DialogResult.OK) {
-                WaniKaniAlerter.Properties.Settings.Default.EnableLessonAlerts = this.cbLessonAlerts.Checked;
-                WaniKaniAlerter.Properties.Settings.Default.EnableReviewAlerts = this.cbReviewAlerts.Checked;
-                WaniKaniAlerter.Properties.Settings.Default.MinimumLessons = (int) this.nudMinLessons.Value;
-                WaniKaniAlerter.Properties.Settings.Default.MinimumReviews = (int) this.nudMinReviews.Value;
-                WaniKaniAlerter.Properties.Settings.Default.UpdateRate = (int)this.nudUpdateRate.Value;
+                Properties.Settings.Default.EnableLessonAlerts = this.cbLessonAlerts.Checked;
+                Properties.Settings.Default.EnableReviewAlerts = this.cbReviewAlerts.Checked;
+                Properties.Settings.Default.MinimumLessons = (int) this.nudMinLessons.Value;
+                Properties.Settings.Default.MinimumReviews = (int) this.nudMinReviews.Value;
+                Properties.Settings.Default.UpdateRate = (int)this.nudUpdateRate.Value;
                 timerUpdate.Interval = (int) this.nudUpdateRate.Value * 60000;
-                WaniKaniAlerter.Properties.Settings.Default.Save();
+                Properties.Settings.Default.Save();
             } else {
-                this.nudMinLessons.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumLessons;
-                this.nudMinReviews.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumReviews;
-                this.nudUpdateRate.Value = WaniKaniAlerter.Properties.Settings.Default.UpdateRate;
+                this.nudMinLessons.Value = Properties.Settings.Default.MinimumLessons;
+                this.nudMinReviews.Value = Properties.Settings.Default.MinimumReviews;
+                this.nudUpdateRate.Value = Properties.Settings.Default.UpdateRate;
             }
         }
 
@@ -203,17 +201,17 @@ namespace WaniKaniAlerter
             this.MaximumSize = this.Size;
             this.MinimumSize = this.Size;
 
-            this.Icon = WaniKaniAlerter.Properties.Resources.LogoStamp;
-            this.ni.Icon = WaniKaniAlerter.Properties.Resources.LogoStamp;
+            this.Icon = Properties.Resources.LogoStamp;
+            this.ni.Icon = Properties.Resources.LogoStamp;
 
             // Load user settings that affect controls
-            this.timerUpdate.Interval = WaniKaniAlerter.Properties.Settings.Default.UpdateRate * 60000;
+            this.timerUpdate.Interval = Properties.Settings.Default.UpdateRate * 60000;
 
-            this.cbLessonAlerts.Checked = WaniKaniAlerter.Properties.Settings.Default.EnableLessonAlerts;
-            this.cbReviewAlerts.Checked = WaniKaniAlerter.Properties.Settings.Default.EnableReviewAlerts;
-            this.nudMinLessons.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumLessons;
-            this.nudMinReviews.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumReviews;
-            this.nudUpdateRate.Value = WaniKaniAlerter.Properties.Settings.Default.UpdateRate;
+            this.cbLessonAlerts.Checked = Properties.Settings.Default.EnableLessonAlerts;
+            this.cbReviewAlerts.Checked = Properties.Settings.Default.EnableReviewAlerts;
+            this.nudMinLessons.Value = Properties.Settings.Default.MinimumLessons;
+            this.nudMinReviews.Value = Properties.Settings.Default.MinimumReviews;
+            this.nudUpdateRate.Value = Properties.Settings.Default.UpdateRate;
         }
         #endregion
 
