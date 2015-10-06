@@ -1,6 +1,9 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Media;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
@@ -31,11 +34,25 @@ namespace WaniKaniAlerter
             return ValidateAPIKey();
         }
 
-        private void Alert(int numReviews) {
+        private string GetMessageString(int numLessons, int numReviews) {
+            List<string> messageParts = new List<string>();
+
+            if (Properties.Settings.Default.EnableLessonAlerts && numLessons > 0) {
+                messageParts.Add(String.Format("{0:N0} lessons", numLessons));
+            }
+            if (Properties.Settings.Default.EnableReviewAlerts && numReviews > 0) {
+                messageParts.Add(String.Format("{0:N0} reviews", numReviews));
+            }
+
+            return string.Join(" and ", messageParts);
+        }
+
+        private void Alert(int numLessons, int numReviews) {
             if (!SilentMode) {
+                var messageString = String.Format("The Crabigator has {0} for you", GetMessageString(numLessons, numReviews));
                 ni.ShowBalloonTip(5000
                                  , "WaniKani Alert"
-                                 , String.Format("The Crabigator has {0:N0} reviews for you.", numReviews)
+                                 , messageString
                                  , ToolTipIcon.None);
                 SystemSounds.Exclamation.Play();
             }
@@ -59,11 +76,16 @@ namespace WaniKaniAlerter
             UpdateStatus("Getting info...");
             _client.StudyQueue(!forceUpdate).ContinueWith(async (t) => {
                 queue = await t;
+
                 // Don't notify repeatedly if the first notification was seen.
-                if (NextReviewTimeWhenAlertSeen != queue.NextReviewDate && queue.ReviewsAvailable >= WaniKaniAlerter.Properties.Settings.Default.MinimumReviews) {
-                    Alert(queue.ReviewsAvailable);
+                bool showAlert = NextReviewTimeWhenAlertSeen != queue.NextReviewDate;
+                bool alertLessons = Properties.Settings.Default.EnableLessonAlerts && queue.LessonsAvailable >= Properties.Settings.Default.MinimumLessons;
+                bool alertReviews = Properties.Settings.Default.EnableReviewAlerts && queue.ReviewsAvailable >= Properties.Settings.Default.MinimumReviews;
+
+                if (showAlert && (alertLessons || alertReviews)) {
+                    Alert(queue.LessonsAvailable, queue.ReviewsAvailable);
                 }
-                UpdateStatus(queue.ReviewsAvailable);
+                UpdateStatus(queue.LessonsAvailable, queue.ReviewsAvailable);
             }).ContinueWith((t) => {
                 UpdateStatus("Failed to get study queue.");
             }, TaskContinuationOptions.OnlyOnFaulted);
@@ -82,8 +104,9 @@ namespace WaniKaniAlerter
             messages.Enqueue(() => statusToolStripMenuItem.Text = newStatus);
         }
 
-        private void UpdateStatus(int reviewsAvailable) {
-            UpdateStatus(String.Format("{0:N0} review(s) available", reviewsAvailable));
+        private void UpdateStatus(int lessonsAvailable, int reviewsAvailable) {
+            string messageString = GetMessageString(lessonsAvailable, reviewsAvailable);
+            UpdateStatus(messageString);
         }
 
         public Task ValidateAPIKey() {
@@ -126,11 +149,15 @@ namespace WaniKaniAlerter
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e) {
             DialogResult dlg = this.ShowDialog();
             if (dlg == System.Windows.Forms.DialogResult.OK) {
+                WaniKaniAlerter.Properties.Settings.Default.EnableLessonAlerts = this.cbLessonAlerts.Checked;
+                WaniKaniAlerter.Properties.Settings.Default.EnableReviewAlerts = this.cbReviewAlerts.Checked;
+                WaniKaniAlerter.Properties.Settings.Default.MinimumLessons = (int) this.nudMinLessons.Value;
                 WaniKaniAlerter.Properties.Settings.Default.MinimumReviews = (int) this.nudMinReviews.Value;
                 WaniKaniAlerter.Properties.Settings.Default.UpdateRate = (int)this.nudUpdateRate.Value;
                 timerUpdate.Interval = (int) this.nudUpdateRate.Value * 60000;
                 WaniKaniAlerter.Properties.Settings.Default.Save();
             } else {
+                this.nudMinLessons.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumLessons;
                 this.nudMinReviews.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumReviews;
                 this.nudUpdateRate.Value = WaniKaniAlerter.Properties.Settings.Default.UpdateRate;
             }
@@ -182,9 +209,23 @@ namespace WaniKaniAlerter
             // Load user settings that affect controls
             this.timerUpdate.Interval = WaniKaniAlerter.Properties.Settings.Default.UpdateRate * 60000;
 
+            this.cbLessonAlerts.Checked = WaniKaniAlerter.Properties.Settings.Default.EnableLessonAlerts;
+            this.cbReviewAlerts.Checked = WaniKaniAlerter.Properties.Settings.Default.EnableReviewAlerts;
+            this.nudMinLessons.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumLessons;
             this.nudMinReviews.Value = WaniKaniAlerter.Properties.Settings.Default.MinimumReviews;
             this.nudUpdateRate.Value = WaniKaniAlerter.Properties.Settings.Default.UpdateRate;
         }
         #endregion
+
+        private void cbLessonAlerts_CheckedChanged(object sender, EventArgs e)
+        {
+            nudMinLessons.Enabled = cbLessonAlerts.Checked;
+        }
+
+        private void cbReviewAlerts_CheckedChanged(object sender, EventArgs e)
+        {
+            nudMinReviews.Enabled = cbReviewAlerts.Checked;
+
+        }
     }
 }
